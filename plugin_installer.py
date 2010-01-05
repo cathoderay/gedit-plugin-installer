@@ -1,3 +1,4 @@
+import os
 from gettext import gettext as _
 
 import gtk
@@ -66,11 +67,34 @@ class PluginInstallerWindowHelper:
 
     # Menu activate handlers
     def on_install_plugin_activate(self, action):
-        d = gtk.Dialog("Work in progress...")
-        d.show()
+        #d = gtk.Dialog("Work in progress...")
+        #d.show()
+        window = gtk.Window()
+        button = gtk.Button('Install')
+        label = gtk.Label('Path with a *.gedit-plugin file:')
+        table = gtk.Table(2, 5, True)
+        text = gtk.Entry()
+        self._path = text
+        table.attach(label, 0, 2, 0, 1)
+        table.attach(text, 2, 5, 0, 1)
+        table.attach(button, 3, 5, 1, 2)
+        window.add(table)
+        button.connect('clicked', self.install)
+        window.set_position(gtk.WIN_POS_CENTER)
+        window.show_all()
+
+    def install(self, data):
+        try:
+            path = self._path.get_text()
+            if path.endswith('/'): 
+                path = path[:-1]
+            os.system('cp -r %s/* $HOME/.gnome2/gedit/plugins/' % path)
+        except:
+            print 'nothing done!'
+        print 'plugin installed!'       
 
     def update_ui(self):
-        pass    
+        pass
 
 
 class PluginInstaller(gedit.Plugin):
