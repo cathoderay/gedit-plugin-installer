@@ -9,7 +9,7 @@ ui_str = """<ui>
   <menubar name="MenuBar">
     <menu name="ToolsMenu" action="Tools">
       <placeholder name="ToolsOps_2">
-        <menuitem name="ExamplePy" action="ExamplePy"/>
+        <menuitem name="PluginInstaller" action="PluginInstaller"/>
       </placeholder>
     </menu>
   </menubar>
@@ -22,7 +22,6 @@ class PluginInstallerWindowHelper:
         self._window = window
         self._plugin = plugin
 
-        # Insert menu items
         self._insert_menu()
 
     def deactivate(self):
@@ -38,8 +37,8 @@ class PluginInstallerWindowHelper:
         manager = self._window.get_ui_manager()
 
         # Create a new action group
-        self._action_group = gtk.ActionGroup("ExamplePyPluginActions")
-        self._action_group.add_actions([("ExamplePy", None, _("Install plugin..."),
+        self._action_group = gtk.ActionGroup("PluginInstallerActions")
+        self._action_group.add_actions([("PluginInstaller", None, _("Install plugin..."),
                                          None, _("Clear the document"),
                                          self.on_install_plugin_activate)])
 
