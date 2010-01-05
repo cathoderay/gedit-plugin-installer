@@ -39,7 +39,7 @@ class PluginInstallerWindowHelper:
         # Create a new action group
         self._action_group = gtk.ActionGroup("PluginInstallerActions")
         self._action_group.add_actions([("PluginInstaller", None, _("Install plugin..."),
-                                         None, _("Clear the document"),
+                                         None, _("Install a plugin"),
                                          self.on_install_plugin_activate)])
 
         # Insert the action group
