@@ -89,8 +89,10 @@ class PluginInstallerWindowHelper:
                 path = path[:-1]
             directory = "/tmp/gedit-plugin-installer-%s" % time.time()
             os.mkdir(directory)
-            os.chdir(directory)
             os.system('tar -xzf %s -C %s' % (path, directory))
+            os.chdir(directory)
+            find = 'find -name "*.gedit-plugin" -printf %h'
+            origin = os.popen(find).readlines()[0]
             os.chdir(os.listdir('.')[0])
             os.system('cp -r . $HOME/.gnome2/gedit/plugins/')
         except:
