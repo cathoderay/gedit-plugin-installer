@@ -92,8 +92,7 @@ class PluginInstallerWindowHelper:
             os.system('tar -xzf %s -C %s' % (path, directory))
             os.chdir(directory)
             find = 'find -name "*.gedit-plugin" -printf %h'
-            origin = os.popen(find).readlines()[0]
-            os.chdir(os.listdir('.')[0])
+            os.chdir(os.popen(find).readlines()[0])
             os.system('cp -r . $HOME/.gnome2/gedit/plugins/')
         except:
             gtk.MessageDialog(parent=self._window, message_format="Error.").show()        
