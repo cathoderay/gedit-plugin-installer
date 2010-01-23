@@ -1,3 +1,4 @@
+import time
 import os
 from gettext import gettext as _
 
@@ -67,11 +68,9 @@ class PluginInstallerWindowHelper:
 
     # Menu activate handlers
     def on_install_plugin_activate(self, action):
-        #d = gtk.Dialog("Work in progress...")
-        #d.show()
         window = gtk.Window()
         button = gtk.Button('Install')
-        label = gtk.Label('Path with a *.gedit-plugin file:')
+        label = gtk.Label('Full path (tar.gz plugin file):')
         table = gtk.Table(2, 5, True)
         text = gtk.Entry()
         self._path = text
@@ -88,10 +87,16 @@ class PluginInstallerWindowHelper:
             path = self._path.get_text()
             if path.endswith('/'): 
                 path = path[:-1]
-            os.system('cp -r %s/* $HOME/.gnome2/gedit/plugins/' % path)
+            directory = "/tmp/gedit-plugin-installer-%s" % time.time()
+            os.mkdir(directory)
+            os.chdir(directory)
+            os.system('tar -xzf %s -C %s' % (path, directory))
+            os.chdir(os.listdir('.')[0])
+            os.system('cp -r . $HOME/.gnome2/gedit/plugins/')
         except:
-            print 'nothing done!'
-        print 'plugin installed!'       
+            gtk.MessageDialog(parent=self._window, message_format="Error.").show()        
+        else:
+            gtk.MessageDialog(parent=self._window, message_format="Plugin installed. Enable it in Edit > Preferences.").show()       
 
     def update_ui(self):
         pass
