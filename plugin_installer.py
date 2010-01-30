@@ -68,25 +68,21 @@ class PluginInstallerWindowHelper:
 
     # Menu activate handlers
     def on_install_plugin_activate(self, action):
-        window = gtk.Window()
-        button = gtk.Button('Install')
-        label = gtk.Label('Full path (tar.gz plugin file):')
-        table = gtk.Table(2, 5, True)
-        text = gtk.Entry()
-        self._path = text
-        table.attach(label, 0, 2, 0, 1)
-        table.attach(text, 2, 5, 0, 1)
-        table.attach(button, 3, 5, 1, 2)
-        window.add(table)
-        button.connect('clicked', self.install)
-        window.set_position(gtk.WIN_POS_CENTER)
-        window.show_all()
+        fileChooser = gtk.FileChooserDialog(title="Select a valid tar.gz plugin",
+            parent=self._window,
+            action=gtk.FILE_CHOOSER_CONFIRMATION_CONFIRM,
+            buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
+                       gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        fileChooser.set_default_response(gtk.RESPONSE_OK)
 
-    def install(self, data):
+        response = fileChooser.run()
+        if response == gtk.RESPONSE_OK:
+            selectedDir = os.path.normpath( fileChooser.get_filename() ) #+ "/"
+            self.install(selectedDir)
+        fileChooser.destroy()
+
+    def install(self, path):
         try:
-            path = self._path.get_text()
-            if path.endswith('/'): 
-                path = path[:-1]
             directory = "/tmp/gedit-plugin-installer-%s" % time.time()
             os.mkdir(directory)
             os.system('tar -xzf %s -C %s' % (path, directory))
