@@ -1,0 +1,10 @@
+[Gedit Plugin]
+Loader=python
+Module=plugin_installer
+IAge=2
+Name=Plugin Installer
+Icon=package
+Description=A plugin to install others gedit plugins.
+Authors=Ronald Andreu Kaiser <raios.catodicos@gmail.com>
+Copyright=Copyright © 2010 Ronald Andreu Kaiser <raios.catodicos@gmail.com>
+Website=http://github.com/cathoderay/gedit-plugin-installer
