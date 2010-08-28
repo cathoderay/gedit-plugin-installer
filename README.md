@@ -3,7 +3,7 @@ Installation
 
 Debian package
 ==============
-Download it in .deb in http://github.com/cathoderay/gedit-plugin-installer/downloads
+Download it in http://github.com/cathoderay/gedit-plugin-installer/downloads
 
 From source
 ===========
