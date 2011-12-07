@@ -1,5 +1,6 @@
 import time
 import os
+import re
 from gettext import gettext as _
 
 import gtk
@@ -68,7 +69,7 @@ class PluginInstallerWindowHelper:
 
     # Menu activate handlers
     def on_install_plugin_activate(self, action):
-        fileChooser = gtk.FileChooserDialog(title="Select a valid tar.gz plugin",
+        fileChooser = gtk.FileChooserDialog(title="Select a valid tar.gz or tar.bz2 plugin",
             parent=self._window,
             action=gtk.FILE_CHOOSER_CONFIRMATION_CONFIRM,
             buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
@@ -85,7 +86,13 @@ class PluginInstallerWindowHelper:
         try:
             directory = "/tmp/gedit-plugin-installer-%s" % time.time()
             os.mkdir(directory)
-            os.system('tar -xzf %s -C %s' % (path, directory))
+            if re.search(r'\.t(ar.)?gz$', path):
+                os.system('tar -xzf %s -C %s' % (path, directory))
+            elif re.search(r'\.tar.bz2$', path):
+                os.system('tar -xjf %s -C %s' % (path, directory))
+            else:
+                gtk.MessageDialog(parent=self._window, message_format="Invalid plugin archive.").show()        
+                return
             os.chdir(directory)
             find = 'find -name "*.gedit-plugin" -printf %h'
             os.chdir(os.popen(find).readlines()[0])
